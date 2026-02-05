@@ -19,7 +19,8 @@ alias sus='boulette "systemctl suspend" --ssh-only --challenge hostname'
 alias sshk='kitten ssh'
 
 ## nvim variants 
-alias nvid='neovide'
+# alias nvid='neovide'
+
 alias nvik='kitten edit-in-kitty' #practical over ssh
 alias nvi='NVIM_APPNAME=nvchad nvim'
 alias nv='NVIM_APPNAME=nvim nvim'
@@ -34,6 +35,7 @@ alias speed='speedtest-go'
 # Crocuda tools
 alias p='pipelight'
 alias v='virshle'
+
 
 # alias clear='clear -x; tput cup (math round "$LINES * 3/4") 0;'
 
@@ -56,3 +58,9 @@ export ze
 ## llm
 ## net
 alias myip="curl ifconfig.co"
+
+function todo;
+  set file ~/TODO.md
+  set dir $HOME
+  cd $dir && touch $file && nvid $file && exit;
+end

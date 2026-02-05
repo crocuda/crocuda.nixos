@@ -23,8 +23,10 @@ with lib;
 
       # Inspect fs and io
 
+      # Disk
       duf # df replacement (go)
       dysk # df replacement (rust)
+      dua
 
       pciutils
       lshw

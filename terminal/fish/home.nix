@@ -11,8 +11,12 @@ with lib;
       {
         # Prompt
         ".config/starship.toml".source = dotfiles/starship.toml;
-        # Shell aliases
+
+        ## Shell aliases
         ".aliases".source = dotfiles/fish/.aliases;
+        # Neovim client/server helpers and aliases
+        ".config/fish/conf.d/neovim.fish".source = dotfiles/fish/neovim.fish;
+
         # Extra comfort
         ".config/fish/conf.d/title.fish".source = dotfiles/fish/title.fish;
         ".config/fish/conf.d/abbrev.fish".source = dotfiles/fish/abbrev.fish;
