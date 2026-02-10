@@ -4,6 +4,7 @@ function get_cwd;
   set -l cwd $PWD
   if set -q argv[1]
     set -l PATH $argv[1]
+
     if path is -d $PATH
       set cwd $PATH
     else if path is -f $PATH
@@ -54,30 +55,12 @@ function make_tidy_socket;
   echo $link
 end
 
-# Usage: 
-#  - nvidd
-#  - nvidd <directory>
-function nvidd;
+function nvim_restore_session;
+  # Args
+  set dir $argv[1]
 
   # Set socket path
-  set socket $(make_local_socket $argv[1])
-
-  set pwd $PWD
-  set cwd $(get_cwd $argv[1])
-
-  ## Run server
-  set server "cd $cwd \
-    && nvim \
-      --headless \
-      --listen $socket"
-  set cmd $server
-  set orphan "sh -c { $cmd & } >/dev/null 2>&1 &"
-  eval $orphan
-
-  ## Run GUI
-  set gui "cd $cwd && neovide --fork --server $socket"
-  set cmd $gui
-  eval $cmd
+  set socket $(make_local_socket $dir)
 
   ## Extra commands
   set extra "nvim \
@@ -89,4 +72,59 @@ function nvidd;
 
 end
 
+function nvid_listen;
+  # Args
+  set dir $argv[1]
+
+  ## Run GUI
+  if string match -e -q ':' $dir == $dir
+    # ssh
+    set -l socket $dir
+    set gui "neovide --fork --server $socket"
+    set cmd $gui
+    eval $cmd
+  else
+    # local
+    # Set socket path
+    set -l socket $(make_local_socket $dir)
+    set cwd $(get_cwd $dir)
+    set gui "cd $cwd && neovide --fork --server $socket"
+    set cmd $gui
+    eval $cmd
+  end
+end
+
+function nvim_serve;
+  # Args
+  set dir $argv[1]
+
+  # Set socket path
+  set socket $(make_local_socket $dir)
+
+  ## Run server
+  set cwd $(get_cwd $dir)
+  set server "cd $cwd \
+    && nvim \
+      --headless \
+      --listen $socket"
+  set cmd $server
+  set orphan "sh -c { $cmd & } >/dev/null 2>&1 &"
+  eval $orphan
+end
+
+# Run a neovide instance over a nvim server
+# Usage: 
+#  - nvidd
+#  - nvidd <directory>
+function nvidd;
+  # Args
+  set dir $argv[1]
+
+  ## Run server
+  nvim_serve $dir
+  ## Run GUI
+  nvid_listen $dir
+  ## Extra commands
+  nvim_restore_session $dir
+end
 
