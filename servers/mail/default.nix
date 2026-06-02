@@ -25,47 +25,56 @@ with lib; let
     lib.concatLines (
       lib.lists.forEach domains (
         name: ''
-          autoconfig.${name}/mail/config-v1.1.xml {
-            respond "${_generate_xml name}" 200
+          mx1.${name} {
+            #used for cert generation only!
+          }
+          autoconfig.${name} {
+            handle /mail/config-v1.1.xml {
+                respond "${_generate_xml name}"
+            }
           }
         ''
       )
     );
   # Usage: _make_certs ["example.com"] -> [{cert = ""; key = ""}]
   _generate_xml = name: ''
-    <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    <?xml version=\"1.0\"?>
     <clientConfig version=\"1.1\">
       <emailProvider id=\"${name}\">
-         <domain>example.com</domain>
+         <domain>${name}</domain>
+         <domain>mx1.${name}</domain>
+         <displayName>${name}</displayName>
+         <displayNameShort>${name}</displayNameShort>
          <incomingServer type=\"imap\">
-            <hostname>imap.${name}</hostname>
+            <hostname>mx1.%EMAILDOMAIN%</hostname>
             <port>993</port>
             <socketType>SSL</socketType>
             <authentication>password-cleartext</authentication>
             <username>%EMAILADDRESS%</username>
          </incomingServer>
          <incomingServer type=\"imap\">
-            <hostname>imap.${name}</hostname>
+            <hostname>mx1.%EMAILDOMAIN%</hostname>
             <port>143</port>
             <socketType>STARTTLS</socketType>
             <authentication>password-cleartext</authentication>
             <username>%EMAILADDRESS%</username>
          </incomingServer>
          <outgoingServer type=\"smtp\">
-            <hostname>smtp.${name}</hostname>
+            <hostname>mx1.%EMAILDOMAIN%</hostname>
             <port>465</port>
             <socketType>SSL</socketType>
             <authentication>password-cleartext</authentication>
             <username>%EMAILADDRESS%</username>
          </outgoingServer>
          <outgoingServer type=\"smtp\">
-            <hostname>smtp.${name}</hostname>
+            <hostname>mx1.%EMAILDOMAIN%</hostname>
             <port>587</port>
             <socketType>STARTTLS</socketType>
             <authentication>password-cleartext</authentication>
             <username>%EMAILADDRESS%</username>
          </outgoingServer>
       </emailProvider>
+      <documentation url=\"${name}\"></documentation>
     </clientConfig>
   '';
 
@@ -77,8 +86,8 @@ with lib; let
       # keyPath = "${certbot_dir}/${name}/privkey.pem";
       # }
       {
-        certPath = "${caddy_dir}/${name}/${name}.crt";
-        keyPath = "${caddy_dir}/${name}/${name}.key";
+        certPath = "${caddy_dir}/mx1.${name}/mx1.${name}.crt";
+        keyPath = "${caddy_dir}/mx1.${name}/mx1.${name}.key";
       }
     );
 in
@@ -88,10 +97,14 @@ in
         # Maddy directories
         # Make them by hand if maddy unit fails
         "d /run/maddy 774 maddy users - -"
-        "Z /run/maddy 774 maddy users - -"
+        "Z /run/maddy 77 maddy users - -"
+
         # Symlink to nginx-unit certs
-        "L+ /etc/maddy/certs - - - - /var/spool/unit/certs"
-        "Z /etc/letsencrypt 754 root users - -"
+        # "Z /etc/letsencrypt 754 root users - -"
+        # "L+ /etc/maddy/certs - - - - /var/spool/unit/certs"
+        # Symlink to caddy certs
+        "Z /var/lib/caddy 775 caddy users - -"
+        "L+ /etc/maddy/certs - - - - ${caddy_dir}"
       ];
 
       # The mail server
@@ -107,6 +120,7 @@ in
         ensureAccounts = accounts;
         config = builtins.readFile ./dotfiles/maddy.conf;
         tls = {
+          # loader = "acme";
           loader = "file";
           certificates = _make_certificates domains;
         };
@@ -116,11 +130,11 @@ in
       services.caddy = {
         extraConfig = _make_caddy_extraconf domains;
       };
-      users.users."root" = {
-        initialPassword = "root";
-      };
-      users.users."anon" = {
-        isNormalUser = true;
-        initialPassword = "anon";
-      };
+      # users.users."root" = {
+      #   initialPassword = "root";
+      # };
+      # users.users."anon" = {
+      #   isNormalUser = true;
+      #   initialPassword = "anon";
+      # };
     }

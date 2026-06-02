@@ -26,6 +26,7 @@ set -g fish_user_key_bindings
 # atuin init fish | source
 
 direnv hook fish | source
+# devenv hook fish | source
 zoxide init fish | source
 
 ## FZF(skim) configuration

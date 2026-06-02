@@ -155,12 +155,12 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     # if there is something to move forward to.
     bind -s --preset -M default x delete-char forward-single-char backward-char
     bind -s --preset -M default X backward-delete-char
-    bind -s --preset -M insert -k dc delete-char forward-single-char backward-char
-    bind -s --preset -M default -k dc delete-char forward-single-char backward-char
+    bind -s --preset -M insert dc delete-char forward-single-char backward-char
+    bind -s --preset -M default dc delete-char forward-single-char backward-char
 
     # Backspace deletes a char in insert mode, but not in normal/default mode.
-    bind -s --preset -M insert -k backspace backward-delete-char
-    bind -s --preset -M default -k backspace backward-char
+    bind -s --preset -M insert backspace backward-delete-char
+    bind -s --preset -M default backspace backward-char
     bind -s --preset -M insert \ch backward-delete-char
     bind -s --preset -M default \ch backward-char
     bind -s --preset -M insert \x7f backward-delete-char
@@ -192,8 +192,8 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     bind -s --preset di delete-char
     # bind -s --preset di backward-jump-till and repeat-jump-reverse and begin-selection repeat-jump kill-selection end-selection
     bind -s --preset da backward-jump and repeat-jump-reverse and begin-selection repeat-jump kill-selection end-selection
-    bind -s --preset 'd;' begin-selection repeat-jump kill-selection end-selection
-    bind -s --preset 'd,' begin-selection repeat-jump-reverse kill-selection end-selection
+    # bind -s --preset 'd;' begin-selection repeat-jump kill-selection end-selection
+    # bind -s --preset 'd,' begin-selection repeat-jump-reverse kill-selection end-selection
 
     bind -s --preset -m insert s delete-char repaint-mode
     bind -s --preset -m insert S kill-inner-line repaint-mode
@@ -264,7 +264,7 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     bind -s --preset t forward-jump-till
     bind -s --preset T backward-jump-till
     bind -s --preset ';' repeat-jump
-    bind -s --preset , repeat-jump-reverse
+    bind -s --preset comma repeat-jump-reverse
 
     # in emacs yank means paste
     # in vim p means paste *after* current character, so go forward a char before pasting
@@ -295,7 +295,7 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     bind -s --preset -M replace -m default \e cancel repaint-mode
     # in vim (and maybe in vi), <BS> deletes the changes
     # but this binding just move cursor backward, not delete the changes
-    bind -s --preset -M replace -k backspace backward-char
+    bind -s --preset -M replace backspace backward-char
 
     #########################################################
     ## Visual mode
