@@ -15,6 +15,8 @@ function get_cwd;
 end
 
 ## INFO: Works.
+## Creates a nvim server socket file under the current directory,
+## or the sepecified directory.
 function make_local_socket;
   set socket_file 'nvim.socket'
 
@@ -55,6 +57,12 @@ function make_tidy_socket;
   echo $link
 end
 
+## Restore session .
+##
+## Nvim auto-session works after GUI initialization.
+## However we do not initiae GUI here, so we need to send a command
+## to trigger the plugin.
+##
 function nvim_restore_session;
   # Args
   set dir $argv[1]

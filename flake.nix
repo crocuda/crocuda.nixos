@@ -99,6 +99,7 @@
 
         ./flake.nix
         ./default.nix
+        ./shell.nix
 
         # package derivations (imported by other means)
         ./servers/dns/hickory.latest.nix
