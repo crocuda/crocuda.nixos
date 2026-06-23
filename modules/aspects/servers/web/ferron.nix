@@ -1,24 +1,15 @@
-{
-  config,
-  pkgs,
-  pkgs-unstable,
-  pkgs-deprecated,
-  lib,
-  inputs,
-  ...
-}: let
-  cfg = config.crocuda;
-  ferron-latest = pkgs.callPackage ./ferron.latest.nix {};
-in
-  with lib;
-    mkIf cfg.servers.web.ferron.enable {
-      environment.systemPackages = with pkgs-unstable; [
-        # Webserver written in Rust
-        # ferron
-        ferron-latest
+# Ferron - A webserver written in Rust
+{...}: {
+  crocuda.web.ferron = {
+    nixos = {
+      config,
+      pkgs,
+      lib,
+      ...
+    }: {
+      environment.systemPackages = with pkgs; [
+        ferron
       ];
-
-      crocuda.servers.web.ferron.config = mkBefore (builtins.readFile ./dotfiles/ferron/default.kdl);
 
       systemd.services."ferron" = {
         description = "Ferron - A fast, memory-safe web server written in Rust.";
@@ -34,6 +25,10 @@ in
           AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         };
       };
+
+      crocuda.web.ferron.config = with lib; mkBefore (builtins.readFile ./dotfiles/ferron/default.kdl);
       environment.etc.
-        "ferron/config.kdl".text = cfg.servers.web.ferron.config;
-    }
+        "ferron/config.kdl".text = config.crocuda.web.ferron.config;
+    };
+  };
+}

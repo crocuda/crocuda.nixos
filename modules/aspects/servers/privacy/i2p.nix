@@ -1,20 +1,18 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}: let
-  cfg = config.crocuda;
-  username = "i2pd";
-in
-  with lib;
-    mkIf cfg.servers.web.i2p.enable {
+{...}: {
+  crocuda.privacy.i2p = {
+    nixos = {
+      config,
+      pkgs,
+      ...
+    }: let
+      username = "i2pd";
+      group = "i2pd";
+    in {
       # Dedicated user and group
-      users.groups.i2pd = {};
-      users.users.${username} = {
+      users.groups."${group}" = {};
+      users.users."${username}" = {
         isSystemUser = true;
-        group = "i2pd";
+        group = "${group}";
       };
 
       environment.systemPackages = with pkgs; [
@@ -31,10 +29,12 @@ in
         "i2pd/tunnels.conf".source = dotfiles/i2pd/tunnels.conf;
       };
       # Create working dir for Soft and Charm
-      systemd.tmpfiles.rules = [
-        "d /run/${username} 755 ${username} ${username}"
-        "d /var/log/${username} 755 ${username} ${username}"
-        "d /var/lib/${username} 755 ${username} ${username}"
+      systemd.tmpfiles.rules = let
+        username = "i2pd";
+      in [
+        "d /run/${username} 755 ${username} ${group}"
+        "d /var/log/${username} 755 ${username} ${group}"
+        "d /var/lib/${username} 755 ${username} ${group}"
       ];
 
       systemd.services."i2pd" = {
@@ -81,4 +81,6 @@ in
         };
         wantedBy = ["multi-user.target"];
       };
-    }
+    };
+  };
+}

@@ -3,6 +3,9 @@
   lib,
   ...
 }: {
+  flake = {
+    description = "crocuda.nixos - Dendritic server modules for paranoids and hypochondriacs";
+  };
   imports = [
     (inputs.flake-file.flakeModules.dendritic or {})
     (inputs.den.flakeModules.dendritic or {})
@@ -18,8 +21,8 @@
     };
     ###################################
     ## NixOs pkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     # nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";

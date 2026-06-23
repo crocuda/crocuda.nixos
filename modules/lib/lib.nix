@@ -1,29 +1,29 @@
 {inputs, ...}: {
   flake = {
-    lib,
     pkgs,
+    lib,
     ...
-  }: {
+  }: rec {
     crocuda_lib =
       {}
-      // (import ./lib/network {
-        inherit (pkgs) lib;
+      // (import ./_lib/network {
+        inherit lib;
       })
       // {
-        hugepages = import ./lib/hugepages.nix {
-          inherit (pkgs) lib;
+        hugepages = import ./_lib/hugepages.nix {
+          inherit lib;
         };
       }
       // {
-        dns = import ./lib/dns-zones.nix {
+        dns = import ./_lib/dns-zones.nix {
           inherit inputs;
-          inherit (pkgs) lib;
+          inherit lib;
         };
       };
-    # lib = {...}: {
-    #   imports = builtins.filter (p: lib.hasSuffix ".nix" p && !lib.hasInfix "/_" p) (
-    #     lib.filesystem.listFilesRecursive ./_lib
-    #   );
-    # };
+    ## Unit tests
+    tests = import ./_lib_tests/network.nix {
+      inherit crocuda_lib;
+      inherit lib;
+    };
   };
 }

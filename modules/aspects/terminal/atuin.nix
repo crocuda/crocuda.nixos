@@ -1,14 +1,11 @@
-{
-  inputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
-  cfg = config.crocuda;
-in
-  with lib;
-    mkIf cfg.servers.atuin.enable {
+{...}: {
+  crocuda.shell.atuin = {
+    nixos = {
+      config,
+      pkgs,
+      lib,
+      ...
+    }: {
       services.atuin = {
         enable = true;
         path = "/atuin";
@@ -16,4 +13,6 @@ in
         host = "127.0.0.1";
         port = 8181;
       };
-    }
+    };
+  };
+}

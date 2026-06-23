@@ -1,27 +1,24 @@
-{
-  config,
-  lib,
-  pkgs,
-  pkgs-unstable,
-  ...
-}: let
-  cfg = config.crocuda;
-  keaDDnsEnabled = config.services.kea.dhcp-ddns.enable;
-  # hickory-dns-latest = pkgs.callPackage ./hickory.latest.nix {};
-
-  base = pkgs.writeText "/var/lib/hickory-dns/vm.zone" ''
-    ; SOA record
-    @ IN SOA a.ns admin (
-      1999010100 ; serial
-      10800 ; refresh (3 hours)
-      900 ; retry (15 minutes)
-      604800 ; expire (1 week)
-      86400 ; minimum (1 day)
-    )
-  '';
-in
-  with lib;
-    mkIf config.crocuda.servers.dns.defaultConfig {
+{...}: {
+  crocuda.dns.hickory = {
+    nixos = {...}: {
+      config,
+      lib,
+      pkgs,
+      pkgs-unstable,
+      ...
+    }: let
+      keaDDnsEnabled = config.services.kea.dhcp-ddns.enable;
+      base = pkgs.writeText "/var/lib/hickory-dns/vm.zone" ''
+        ; SOA record
+        @ IN SOA a.ns admin (
+          1999010100 ; serial
+          10800 ; refresh (3 hours)
+          900 ; retry (15 minutes)
+          604800 ; expire (1 week)
+          86400 ; minimum (1 day)
+        )
+      '';
+    in {
       users.users.hickory = {
         group = "users";
         isSystemUser = true;
@@ -124,4 +121,6 @@ in
           ];
         };
       };
-    }
+    };
+  };
+}

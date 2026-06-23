@@ -7,11 +7,11 @@ name = "test-nixosModule"
 name = "run flake test"
 commands = [
   # Update flake deps
-  "nix flake update --flake ./templates/tests",
+  "nix flake update --flake ./templates/dendritic_flake_test",
   # Build flake
   """
   nixos-rebuild build \
-  --flake './templates/tests#default'
+  --flake './templates/dendritic_flake_test#default'
   """,
 ]
 
