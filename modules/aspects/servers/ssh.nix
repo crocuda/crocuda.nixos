@@ -1,12 +1,6 @@
 {...}: {
   crocuda.ssh = {
-    nixos = {
-      config,
-      pkgs,
-      lib,
-      inputs,
-      ...
-    }: {
+    nixos = {...}: {
       ################################
       # Ssh
       #
@@ -20,7 +14,7 @@
       services.gnome.gcr-ssh-agent.enable = false;
 
       services.openssh = {
-        enable = lib.mkDefault cfg.servers.ssh.enable;
+        enable = true;
         # require public key authentication for better security
         settings = {
           PasswordAuthentication = false;
