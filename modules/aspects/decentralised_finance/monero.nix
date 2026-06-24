@@ -1,16 +1,12 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  system,
-  ...
-}: let
-  cfg = config.crocuda;
-in
-  with lib;
-    mkIf cfg.finance.monero.enable {
-      boot.kernelParams = mkAfter ["nr_hugepages=1024"];
+{...}: {
+  crocuda.monero = {
+    nixos = {
+      config,
+      pkgs,
+      lib,
+      ...
+    }: {
+      boot.kernelParams = lib.mkAfter ["nr_hugepages=1024"];
 
       environment.systemPackages = with pkgs; [
         # Mining
@@ -91,4 +87,6 @@ in
           ];
         };
       };
-    }
+    };
+  };
+}

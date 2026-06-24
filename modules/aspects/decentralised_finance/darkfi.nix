@@ -1,19 +1,21 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  system,
-  ...
-}: let
-  cfg = config.crocuda;
-  darkfi = inputs.darkfi.packages.${system}.default;
-in
-  with lib;
-    mkIf cfg.finance.darkfi.enable {
-      environment.systemPackages = with pkgs; [
+{inputs, ...}: {
+  flake-file.inputs = {
+    # DarkIRC
+    darkfi.url = "github:pipelight/darkfi.nix?ref=dev";
+  };
+
+  crocuda.darkfi = {
+    nixos = {
+      pkgs,
+      lib,
+      system,
+      ...
+    }: let
+      darkfi = inputs.darkfi.packages.${system}.default;
+    in {
+      environment.systemPackages = [
         # Darkfi suit
-        # darkfi
+        darkfi
       ];
       ## Darkirc messaging background service
       systemd.user.services."darkircd" = {
@@ -25,4 +27,6 @@ in
         };
         wantedBy = ["multi-user.target"];
       };
-    }
+    };
+  };
+}

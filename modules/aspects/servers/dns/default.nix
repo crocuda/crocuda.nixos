@@ -59,13 +59,7 @@
             # Listen on public
             else ["0.0.0.0" "::0"];
 
-          zones = with crocuda_lib.dns;
-            {}
-            // mkDefaultZone {
-              domain = "vm";
-              ipv4 = null;
-              ipv6 = null;
-            };
+          zones = {};
         };
 
         # Recursive DNS

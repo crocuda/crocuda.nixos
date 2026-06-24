@@ -1,5 +1,4 @@
-{lib, ...}:
-with lib; let
+{lib, ...}: let
   _rand_uuid = builtins.readFile /proc/sys/kernel/random/uuid;
   random_mac = str_to_mac _rand_uuid;
 
@@ -18,13 +17,13 @@ with lib; let
   # Generate a mac address from a sting
   str_to_mac = string: let
     hash = builtins.substring 0 12 (_str_to_hash string);
-    vec_hash = stringToCharacters hash;
+    vec_hash = lib.stringToCharacters hash;
 
-    sanitized_hash = concatStrings (
-      imap0 (i: v:
+    sanitized_hash = lib.concatStrings (
+      lib.imap0 (i: v:
         if i == 1
         then "2" # SLAP quadrant (AAI)
-        else v) (stringToCharacters hash)
+        else v) (lib.stringToCharacters hash)
     );
     step = 2;
     mac = _hash_to_address sanitized_hash step;
@@ -47,12 +46,7 @@ with lib; let
     iid = _hash_to_address hash step;
   in
     iid;
-in rec {
+in {
   inherit _str_to_hash;
-
-  inherit random_mac;
-  inherit str_to_mac;
-
-  inherit str_to_ipv6;
-  inherit str_to_iid;
+  inherit random_mac str_to_mac str_to_ipv6 str_to_iid;
 }

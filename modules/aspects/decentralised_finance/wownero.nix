@@ -1,17 +1,12 @@
-{
-  config,
-  pkgs-stable,
-  lib,
-  inputs,
-  system,
-  ...
-}: let
-  cfg = config.crocuda;
-  pkgs = pkgs-stable;
-in
-  with lib;
-    mkIf cfg.finance.wownero.enable {
-      boot.kernelParams = mkAfter ["nr_hugepages=1024"];
+{...}: {
+  crocuda.wownero = {
+    nixos = {
+      config,
+      pkgs,
+      lib,
+      ...
+    }: {
+      boot.kernelParams = lib.mkAfter ["nr_hugepages=1024"];
 
       environment.systemPackages = with pkgs; [
         wownero
@@ -49,4 +44,6 @@ in
         };
         wantedBy = ["multi-user.target"];
       };
-    }
+    };
+  };
+}

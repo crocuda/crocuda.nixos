@@ -2,17 +2,17 @@
   inputs,
   den,
   crocuda,
-  lib,
   ...
 }: {
   imports = [
-    inputs.den.flakeModule
+    inputs.den.flakeModules.default
     inputs.crocuda.flakeModules.default
+    # OR
     # (inputs.den.namespace "crocuda" inputs.crocuda)
-    # inputs.normal.flakeModule
   ];
 
   den.hosts.default = {
+    hostName = "nixos";
     system = "x86_64-linux";
     users.anon = {};
   };
@@ -22,6 +22,10 @@
         isNormalUser = true;
         initialPassword = "anon";
       };
+      imports = [
+        ../../commons/configuration.nix
+        ../../commons/hardware-configuration.nix
+      ];
     };
     includes = [
       # Den helpers
