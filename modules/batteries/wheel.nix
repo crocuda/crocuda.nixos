@@ -1,9 +1,17 @@
+# Add a user to wheel group.
+#
+# Usage:
+#
+#```nix
+# den.aspects.anon.includes = [
+#    (crocuda.batteries.user-wheel "anon")
+# ];
+#```
 {...}: {
-  crocuda.wheel = {
+  crocuda.batteries.user-wheel = user: {
     nixos = {
       config,
       lib,
-      user,
       ...
     }: {
       ###################################
@@ -21,7 +29,7 @@
         }
       ];
       users.groups = {
-        wheel.members = user;
+        wheel.members = [user];
       };
       ###################################
       # Other
