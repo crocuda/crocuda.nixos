@@ -1,5 +1,5 @@
 {...}: {
-  crocuda.batteries.nix = {
+  crocuda.batteries.lix-and-flakes = {
     nixos = {pkgs, ...}: {
       ##########################
       ## Lix
