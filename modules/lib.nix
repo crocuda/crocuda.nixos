@@ -1,12 +1,14 @@
-{inputs, ...}: {
+{...}: {
   flake = {
     pkgs,
     lib,
     ...
-  }: rec {
-    crocuda_lib = {
-      network = import ../lib/network.nix;
-      hugepages = import ../lib/hugepages.nix;
+  }: let
+    load = file: import file {inherit lib;};
+  in rec {
+    crocuda_lib = builtins.mapAttrs (_: load) {
+      network = ../lib/network.nix;
+      hugepages = ../lib/hugepages.nix;
     };
     ## Unit tests
     tests = import ../lib/_test_network.nix {

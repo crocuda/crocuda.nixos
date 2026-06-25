@@ -7,6 +7,7 @@
     description = "crocuda.nixos - Dendritic server modules for paranoids and hypochondriacs";
   };
   imports = [
+    (inputs.flake-parts.flakeModules.flakeModules or {})
     (inputs.flake-file.flakeModules.dendritic or {})
     (inputs.den.flakeModules.dendritic or {})
   ];
