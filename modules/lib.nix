@@ -1,4 +1,10 @@
 {...}: {
+  flake-file.inputs = {
+    lix-unit = {
+      url = "github:adisbladis/lix-unit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
   flake = {
     pkgs,
     lib,
