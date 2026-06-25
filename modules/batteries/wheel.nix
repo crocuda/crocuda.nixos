@@ -1,14 +1,14 @@
-# Add a user to wheel group.
+# Loosen wheel group security
 #
 # Usage:
 #
 #```nix
 # den.aspects.anon.includes = [
-#    (crocuda.batteries.user-wheel "anon")
+#    crocuda.batteries.user-wheel
 # ];
 #```
 {...}: {
-  crocuda.batteries.user-wheel = user: {
+  crocuda.batteries.loose-wheel = {
     nixos = {
       config,
       lib,
@@ -28,9 +28,12 @@
           ];
         }
       ];
-      users.groups = {
-        wheel.members = [user];
-      };
+      ##########################
+      ## Ssh config to allow private flakes
+      security.sudo.extraConfig = ''
+        Defaults env_keep+=SSH_AUTH_SOCK
+      '';
+
       ###################################
       # Other
       services.dbus.implementation = "broker";

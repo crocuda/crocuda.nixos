@@ -1,16 +1,14 @@
-# Add a wheel group and some users to trusted-users.
+# Add a wheel group and to trusted-users.
 #
 # Usage:
 #
 #```nix
 # den.aspects.anon.includes = [
-#    (crocuda.batteries.trusted-users ["anon"])
-#    # OR
-#    (crocuda.batteries.trusted-users)
+#    crocuda.batteries.trusted-users
 # ];
 #```
 {...}: {
-  den.batteries.trusted-users = {users ? []}: {
+  crocuda.batteries.trusted-users = {
     ##########################
     # Nix substituters
     # and Binary caches

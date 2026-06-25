@@ -4,7 +4,7 @@
   ...
 }: {
   flake = {
-    description = "crocuda.nixos - Dendritic server modules for paranoids and hypochondriacs";
+    # description = "crocuda.nixos - Dendritic server modules for paranoids and hypochondriacs";
   };
   imports = [
     (inputs.flake-parts.flakeModules.flakeModules or {})
