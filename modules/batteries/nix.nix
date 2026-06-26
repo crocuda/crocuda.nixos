@@ -1,9 +1,20 @@
-{...}: {
+{inputs, ...}: {
+  flake-file.inputs = {
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
+
   crocuda.batteries.lix-and-flakes = {
     nixos = {pkgs, ...}: {
       ##########################
       ## Lix
-      nix.package = pkgs.lixPackageSets.stable.lix;
+      nix.package = let
+        system = pkgs.stdenv.hostPlatform.system;
+        pkgs-unstable = import inputs.nixpkgs-unstable {
+          inherit system;
+        };
+      in
+        pkgs-unstable.lixPackageSets.latest.lix;
+      # nix.package = pkgs.lixPackageSets.git.lix;
       ## Nix
       # Enable Flakes
       nix.settings = {
