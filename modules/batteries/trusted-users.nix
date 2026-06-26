@@ -9,18 +9,13 @@
 #```
 {...}: {
   crocuda.batteries.trusted-users = {
-    ##########################
-    # Nix substituters
-    # and Binary caches
-    nix.settings = {
-      trusted-users = ["@wheel"];
-      substituters = [
-        "https://cache.nixos.org/"
-        "https://nix-community.cachix.org"
-      ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
+    nixos = {...}: {
+      ##########################
+      # Nix substituters
+      # and Binary caches
+      nix.settings = {
+        trusted-users = ["@wheel"];
+      };
     };
   };
 }

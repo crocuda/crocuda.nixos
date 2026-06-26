@@ -81,7 +81,7 @@
   };
   crocuda.shell.utils = {
     homeManager = {pkgs, ...}: {
-      home.files = {
+      home.file = {
         # Nushell
         ".config/nushell/config.nu".source = dotfiles/nushell/config.nu;
         ".config/nushell/env.nu".source = dotfiles/nushell/env.nu;

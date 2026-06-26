@@ -8,6 +8,7 @@
       url = "github:pipelight/boulette?ref=dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darkfi.url = "github:pipelight/darkfi.nix?ref=dev";
     den.url = "github:denful/den";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
@@ -19,6 +20,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree.url = "github:denful/import-tree";
+    lix-unit = {
+      url = "github:adisbladis/lix-unit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-deprecated.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
