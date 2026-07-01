@@ -7,14 +7,8 @@
     nixos = {pkgs, ...}: {
       ##########################
       ## Lix
-      nix.package = let
-        system = pkgs.stdenv.hostPlatform.system;
-        pkgs-unstable = import inputs.nixpkgs-unstable {
-          inherit system;
-        };
-      in
-        pkgs-unstable.lixPackageSets.latest.lix;
-      # nix.package = pkgs.lixPackageSets.git.lix;
+      nix.package = pkgs.lixPackageSets.latest.lix;
+
       ## Nix
       # Enable Flakes
       nix.settings = {

@@ -1,11 +1,11 @@
+## Decription:
+#
 # Loosen wheel group security
 #
-# Usage:
+## Usage:
 #
 #```nix
-# den.aspects.anon.includes = [
-#    crocuda.batteries.user-wheel
-# ];
+# includes = [ crocuda.batteries.user-wheel ];
 #```
 {...}: {
   crocuda.batteries.loose-wheel = {
