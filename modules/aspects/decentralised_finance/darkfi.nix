@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs = {
     # DarkIRC
-    darkfi.url = "github:pipelight/darkfi.nix?ref=dev";
+    darkfi.url = "github:crocuda/darkfi.nix?ref=dev";
   };
 
   crocuda.darkfi = {

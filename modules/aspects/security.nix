@@ -2,7 +2,7 @@
   flake-file.inputs = {
     # SysAdmin
     boulette = {
-      url = "github:pipelight/boulette?ref=dev";
+      url = "github:crocuda/boulette?ref=dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

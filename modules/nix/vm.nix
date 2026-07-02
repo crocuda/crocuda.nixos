@@ -32,6 +32,8 @@
       value = pkgs.writeShellApplication {
         name = "vm-${nixosConfigurationName}";
         text = ''
+          ${pkgs.nixos-rebuild-ng}/bin/nixos-rebuild build-vm \
+            --flake ".#${nixosConfigurationName}" "$@"
           ${hostConfig.system.build.vm}/bin/run-${hostConfig.networking.hostName}-vm "$@"
         '';
       };

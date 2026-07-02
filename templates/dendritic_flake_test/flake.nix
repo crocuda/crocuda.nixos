@@ -11,7 +11,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    crocuda.url = "github:pipelight/crocuda.nixos?ref=dev";
+    crocuda.url = "github:crocuda/crocuda.nixos?ref=dev";
   };
 
   outputs = inputs:

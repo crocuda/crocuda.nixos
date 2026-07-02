@@ -23,7 +23,7 @@
   crocuda.batteries.vm = {
     includes = [
       crocuda.batteries.vm.larger
-      (den.batteries.vm-autologin "anon")
+      # (den.batteries.vm-autologin "anon")
       # DANGER: do not use tty autologin in production.
       # (den.batteries.tty-autologin "anon")
     ];

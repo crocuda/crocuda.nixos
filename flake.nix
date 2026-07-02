@@ -5,10 +5,10 @@
 
   inputs = {
     boulette = {
-      url = "github:pipelight/boulette?ref=dev";
+      url = "github:crocuda/boulette?ref=dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    darkfi.url = "github:pipelight/darkfi.nix?ref=dev";
+    darkfi.url = "github:crocuda/darkfi.nix?ref=dev";
     den.url = "github:denful/den";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
