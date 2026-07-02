@@ -12,6 +12,7 @@
   }: let
     load = file: import file {inherit lib;};
   in rec {
+    lib = crocuda_lib;
     crocuda_lib = builtins.mapAttrs (_: load) {
       network = ../lib/network.nix;
       hugepages = ../lib/hugepages.nix;

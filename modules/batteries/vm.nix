@@ -5,7 +5,6 @@
 # includes = [ crocuda.batteries.vm ];
 # ```
 {
-  inputs,
   den,
   crocuda,
   ...
@@ -26,7 +25,7 @@
       crocuda.batteries.vm.larger
       (den.batteries.vm-autologin "anon")
       # DANGER: do not use tty autologin in production.
-      (den.batteries.tty-autologin "anon")
+      # (den.batteries.tty-autologin "anon")
     ];
   };
 }
