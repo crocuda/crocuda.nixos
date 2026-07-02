@@ -35,4 +35,32 @@
       };
     };
   };
+  crocuda.batteries.generation-tag = {
+    nixos = {
+      pkgs,
+      lib,
+      config,
+      options,
+      ...
+    }: {
+      imports = [
+        inputs.nixos-cli.nixosModules.nixos-cli
+      ];
+      system.nixos.tags = [config.system.name];
+      programs =
+        {}
+        // lib.optionalAttrs (builtins.hasAttr "nixos-cli" options.programs) {
+          nixos-cli = {
+            enable = true;
+            generation-tag = config.system.name;
+            # config.system.name
+            # or
+            # builtins.elemAt pkgs.system.nixos.tags 0;
+            settings = {
+              use_nvd = true;
+            };
+          };
+        };
+    };
+  };
 }

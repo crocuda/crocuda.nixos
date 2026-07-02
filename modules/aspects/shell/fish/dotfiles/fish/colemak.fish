@@ -155,7 +155,6 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     # if there is something to move forward to.
     bind -s --preset -M default x delete-char forward-single-char backward-char
     bind -s --preset -M default X backward-delete-char
-    bind -s --preset -M insert dc delete-char forward-single-char backward-char
     bind -s --preset -M default dc delete-char forward-single-char backward-char
 
     # Backspace deletes a char in insert mode, but not in normal/default mode.

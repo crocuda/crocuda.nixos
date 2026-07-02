@@ -1,15 +1,29 @@
-## Description:
-# Faster virtual machines + ease of use.
-## Usage:
-# ```nix`
-# includes = [ crocuda.batteries.vm ];
-# ```
 {
   den,
   crocuda,
+  inputs,
   ...
 }: {
-  crocuda.batteries.vm.larger = {
+  flake-file.inputs = {
+    nixos-cli.url = "github:nix-community/nixos-cli";
+  };
+  ## Description:
+  # Faster virtual machines + ease of use.
+  ## Usage:
+  # ```nix`
+  # includes = [ crocuda.batteries.vm ];
+  # ```
+  crocuda.batteries.vm = {
+    includes = [
+      crocuda.batteries.vm.policies.to-host
+    ];
+    policies.to-host = {user, ...}: {
+      includes = [
+        (den.batteries.vm-autologin user.name)
+        # DANGER: Do not use in production
+        # (den.batteries.tty-autologin user.name)
+      ];
+    };
     nixos = {...}: {
       virtualisation.vmVariant = {
         virtualisation = {
@@ -19,13 +33,28 @@
       };
     };
   };
-
-  crocuda.batteries.vm = {
+  ## Description:
+  # Add a testing user.
+  ## Usage:
+  # ```nix`
+  # includes = [ crocuda.batteries.vm ];
+  # ```
+  crocuda.batteries."testing-user" = {
+    nixos = {...}: {
+      users.users."test" = {
+        isNormalUser = true;
+        initialPassword = "test";
+      };
+    };
     includes = [
-      crocuda.batteries.vm.larger
-      # (den.batteries.vm-autologin "anon")
-      # DANGER: do not use tty autologin in production.
-      # (den.batteries.tty-autologin "anon")
+      {
+        den.homes.test = {
+          system = "x86_64-linux";
+          includes = [
+            (den.batteries.user-shell "fish")
+          ];
+        };
+      }
     ];
   };
 }
