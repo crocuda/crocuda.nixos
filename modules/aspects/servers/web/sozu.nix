@@ -1,5 +1,9 @@
 # Sozu - A HTTP reverse proxy, configurable at runtime, fast and safe, built in Rust.
 {inputs, ...}: {
+  flake-file.inputs = {
+    nix-std.url = "github:chessai/nix-std";
+  };
+
   crocuda.web.sozu = {
     nixos = {
       config,

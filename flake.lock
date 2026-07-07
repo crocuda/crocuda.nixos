@@ -12,13 +12,13 @@
       "locked": {
         "lastModified": 1737227688,
         "narHash": "sha256-WSVbkkL0U+blLsLCa2PeyNS0qJWbde5qfYUNzuHDRgA=",
-        "owner": "pipelight",
+        "owner": "crocuda",
         "repo": "boulette",
         "rev": "f602f2ea5f8eaa8e1e58d901b2d39f499a222193",
         "type": "github"
       },
       "original": {
-        "owner": "pipelight",
+        "owner": "crocuda",
         "ref": "dev",
         "repo": "boulette",
         "type": "github"
@@ -32,13 +32,13 @@
       "locked": {
         "lastModified": 1751018863,
         "narHash": "sha256-wVWQcC77PsscQvOxz2gwHQ14wUqgWFaNhmO8Mf8b7NQ=",
-        "owner": "pipelight",
+        "owner": "crocuda",
         "repo": "darkfi.nix",
         "rev": "2c0d6ae37b455fea12988722cca655b5ee7e3c47",
         "type": "github"
       },
       "original": {
-        "owner": "pipelight",
+        "owner": "crocuda",
         "ref": "dev",
         "repo": "darkfi.nix",
         "type": "github"

@@ -7,6 +7,7 @@
   flake-file.inputs = {
     nixos-cli.url = "github:nix-community/nixos-cli";
   };
+
   ## Description:
   # Faster virtual machines + ease of use.
   ## Usage:

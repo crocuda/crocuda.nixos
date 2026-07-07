@@ -5,7 +5,6 @@
 }: {
   flake-file.inputs = {
     nixos-cli.url = "github:nix-community/nixos-cli";
-    deploy-rs.url = "github:serokell/deploy-rs";
   };
   crocuda.nixos-helpers = {
     nixos = {pkgs, ...}: {
@@ -21,7 +20,7 @@
         nixos-anywhere
         nixos-generators
         disko
-        inputs.deploy-rs.packages.${system}.default
+        deploy-rs
 
         # Secrets and keys
         sops

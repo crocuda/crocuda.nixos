@@ -1,4 +1,8 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    nix-std.url = "github:chessai/nix-std";
+  };
+
   crocuda.shell.fish = {
     nixos = {
       config,

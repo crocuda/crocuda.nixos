@@ -10,6 +10,10 @@
     };
     darkfi.url = "github:crocuda/darkfi.nix?ref=dev";
     den.url = "github:denful/den";
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -24,6 +28,8 @@
       url = "github:adisbladis/lix-unit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-std.url = "github:chessai/nix-std";
+    nixos-cli.url = "github:nix-community/nixos-cli";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-deprecated.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
