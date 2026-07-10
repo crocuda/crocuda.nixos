@@ -1,8 +1,4 @@
-{inputs, ...}: {
-  flake-file.inputs = {
-    nix-std.url = "github:chessai/nix-std";
-  };
-
+{...}: {
   crocuda.shell.fish = {
     nixos = {
       config,
@@ -48,17 +44,26 @@
     };
     homeManager = {pkgs, ...}: {
       home.file = {
-        # Prompt (deprecated)
-        # ".config/starship.toml".source = dotfiles/starship.toml;
-
         ## Shell aliases
         ".aliases".source = dotfiles/fish/.aliases;
-        # Neovim client/server helpers and aliases
-        ".config/fish/conf.d/neovim.fish".source = dotfiles/fish/neovim.fish;
+
+        # Disbale welcome message
+        ".config/fish/conf.d/base.fish".text = ''
+          set fish_greeting
+        '';
+
+        ".config/fish/conf.d/eza.fish".text = ''
+          alias ls='eza -b'
+          alias lls='eza -aalghb'
+          alias ll='eza -lghb'
+          alias tree='eza --tree -alghb -L 2'
+          alias treee='eza --tree -alghb'
+        '';
 
         # Extra comfort
         ".config/fish/conf.d/title.fish".source = dotfiles/fish/title.fish;
-        ".config/fish/conf.d/abbrev.fish".source = dotfiles/fish/abbrev.fish;
+        # Atuin
+        ".config/atuin".source = dotfiles/atuin;
       };
 
       # Prompt
@@ -96,6 +101,17 @@
       };
     };
   };
+
+  crocuda.shell.fish.colemak = {
+    homeManager = {...}: {
+      home.file = {
+        ## Key bindings for colemak-DH
+        ".config/fish/conf.d/interactive.fish".source = dotfiles/fish/interactive.fish;
+        ".config/fish/conf.d/colemak.fish".source = dotfiles/fish/colemak.fish;
+      };
+    };
+  };
+
   crocuda.shell.utils = {
     homeManager = {pkgs, ...}: {
       home.file = {
@@ -103,45 +119,28 @@
         ".config/nushell/config.nu".source = dotfiles/nushell/config.nu;
         ".config/nushell/env.nu".source = dotfiles/nushell/env.nu;
 
+        # Neovim client/server helpers and aliases
+        ".config/fish/conf.d/neovim-next.fish".source = dotfiles/fish/neovim-next.fish;
         # Process management
         # ".config/htop/htoprc".source = dotfiles/htop/htoprc;
-        # Atuin
-        ".config/atuin".source = dotfiles/atuin;
 
-        ## Key bindings for colemak-DH
-        ".config/fish/conf.d/interactive.fish".source = dotfiles/fish/interactive.fish;
-        ".config/fish/conf.d/colemak.fish".source = dotfiles/fish/colemak.fish;
-
-        # siketyan/ghr plugin and completion
-        ".config/fish/conf.d/ghr.fish".text =
-          ''
-            ghr shell fish | source
-            ghr shell fish --completion | source
-          ''
-          # Custom functions for fast source code browsing
-          + ''
-            function gcd;
-              set dest $(ghr search "$argv" | head -n 1)
-              ghr cd $dest
-            end
-            function gnv;
-              set dest $(ghr search "$argv" | head -n 1)
-              ghr cd $dest && nvid && exit
-            end
-          '';
-        ".ghr/ghr.toml".text = inputs.nix-std.lib.serde.toTOML {
-          applications.nvid = {
-            cmd = "${pkgs.neovide}/bin/neovide";
-            args = ["%p"];
-          };
-        };
+        ## FZF(skim) configuration
+        ".config/fish/conf.d/skim.fish".text = ''
+          bind -M default \cf "sk"
+          bind -M insert \cf "sk"
+        '';
       };
       programs = {
         direnv = {
           enable = true;
+          enableFishIntegration = true;
           nix-direnv.enable = true;
         };
         atuin = {
+          enable = true;
+          enableFishIntegration = true;
+        };
+        zoxide = {
           enable = true;
           enableFishIntegration = true;
         };

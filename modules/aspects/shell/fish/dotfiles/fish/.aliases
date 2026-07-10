@@ -4,26 +4,13 @@ alias df='df -h'
 alias free='free -m'
 alias kee='keepassxc-cli'
 
-alias gitu='git add . && git commit && git push'
-
-alias ls='eza -b'
-alias lls='eza -aalghb'
-alias ll='eza -lghb'
-alias tree='eza --tree -alghb -L 2'
-alias treee='eza --tree -alghb'
-
-alias off='boulette "shutdown -h now" --ssh-only --challenge hostname'
-alias sus='boulette "systemctl suspend" --ssh-only --challenge hostname'
+alias off="shutdown -h now"
+alias sus="systemctl suspend"
 
 # SSH
 alias sshk='kitten ssh'
 
-## nvim variants 
-alias nvid='neovide'
-
 alias nvik='kitten edit-in-kitty' #practical over ssh
-alias nvi='NVIM_APPNAME=nvchad nvim'
-alias nv='NVIM_APPNAME=nvim nvim'
 
 # OS fetch
 alias neo='fastfetch'
@@ -36,26 +23,6 @@ alias speed='speedtest-go'
 alias p='pipelight'
 alias v='virshle'
 
-
-# alias clear='clear -x; tput cup (math round "$LINES * 3/4") 0;'
-
-
-# Ai shortcut
-function hey;
-  mods -m mistral -f "$argv"
-end
-function ho;
-  mods -m deepseek-r1 -f "$argv"
-end
-
-# Terminal multiplexer
-# fish function
-function ze;
-  zellij attach $argv --force-run-commands;
-end
-export ze
-
-## llm
 ## net
 alias myip="curl ifconfig.co"
 
@@ -65,15 +32,5 @@ function todo;
   cd $dir && touch $file && nvid $file && exit;
 end
 
-function where;
-  set BIN $argv[1]
-  set BIN_PATH $(readlink -f $(which $BIN))
-  echo $BIN_PATH
-end
-
-function what;
-  set BIN $argv[1]
-  set BIN_PATH $(readlink -f $(which $BIN))
-  set STORE_PATH $(echo $BIN_PATH | cut -d "/" -f 1-4)
-  echo $STORE_PATH
-end
+## Filesystem
+abbr -a dufl duf --only local

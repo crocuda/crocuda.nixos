@@ -37,5 +37,23 @@
         };
       };
     };
+    homeManager = {pkgs, ...}: {
+      home.file = {
+        ".config/fish/conf.d/nixos-helpers.fish".text = ''
+          function where;
+            set BIN $argv[1]
+            set BIN_PATH $(readlink -f $(which $BIN))
+            echo $BIN_PATH
+          end
+          function what;
+            set BIN $argv[1]
+            set BIN_PATH $(readlink -f $(which $BIN))
+            set STORE_PATH $(echo $BIN_PATH | cut -d "/" -f 1-4)
+            echo $STORE_PATH
+          end
+
+        '';
+      };
+    };
   };
 }

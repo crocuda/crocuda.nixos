@@ -1,9 +1,3 @@
-# Disbale welcome message
-set fish_greeting
-
-# Vim mod Colemak-DH keybindings
-set -g fish_vi_key_bindings fish_vi_key_bindings
-set -g fish_key_bindings fish_vi_key_bindings
 
 function fish_user_key_bindings 
 
@@ -23,21 +17,19 @@ set -g fish_user_key_bindings
 
 ## Plugins
 # set -gx ATUIN_NOBIND "true"
+
 # atuin init fish | source
 
-direnv hook fish | source
+# direnv hook fish | source
 # devenv hook fish | source
-zoxide init fish | source
+# zoxide init fish | source
 
-## FZF(skim) configuration
 # Keybindings
-bind -M default \cf "sk"
-bind -M insert \cf "sk"
 
 
 ## Prompt
-starship init fish | source
-enable_transience
+# starship init fish | source
+# enable_transience
 
 ## Push prompt to bottom
 tput cup (math round "$LINES * 3/4") 0
