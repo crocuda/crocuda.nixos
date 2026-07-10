@@ -48,8 +48,8 @@
     };
     homeManager = {pkgs, ...}: {
       home.file = {
-        # Prompt
-        ".config/starship.toml".source = dotfiles/starship.toml;
+        # Prompt (deprecated)
+        # ".config/starship.toml".source = dotfiles/starship.toml;
 
         ## Shell aliases
         ".aliases".source = dotfiles/fish/.aliases;
@@ -59,6 +59,20 @@
         # Extra comfort
         ".config/fish/conf.d/title.fish".source = dotfiles/fish/title.fish;
         ".config/fish/conf.d/abbrev.fish".source = dotfiles/fish/abbrev.fish;
+      };
+
+      # Prompt
+      programs.starship = {
+        enable = true;
+        enableBashIntegration = true;
+        enableFishIntegration = true;
+        enableNushellIntegration = true;
+
+        enableTransience = true;
+        settings = builtins.fromTOML (builtins.readFile ./dotfiles/starship.toml);
+
+        extraPackages = with pkgs; [starship-jj];
+        # presets = ./dotfiles/starship.toml;
       };
 
       # Shell

@@ -1,15 +1,5 @@
 {crocuda, ...}: {
   crocuda.network.tools = {
-    ## Add Users to network group.
-    policies.to-users = {user, ...}: {
-      nixos = {...}: {
-        users.groups = {
-          networkmanager.members = user;
-        };
-      };
-    };
-    includes = [crocuda.network.policies.to-users];
-
     nixos = {
       config,
       pkgs,

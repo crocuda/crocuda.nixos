@@ -3,7 +3,7 @@
 # Usage:
 #
 #```nix
-# den.aspects.anon.includes = [
+# includes = [
 #    crocuda.batteries.trusted-users
 # ];
 #```

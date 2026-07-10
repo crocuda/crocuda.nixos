@@ -26,12 +26,12 @@
     ...
   }: let
     mkNodes = lib.mapAttrs' (
-      hostname: nixosConfiguration: let
+      nixosConfigurationName: nixosConfiguration: let
         inherit (nixosConfiguration.config.nixpkgs.hostPlatform) system;
       in {
-        name = hostname;
+        name = nixosConfigurationName;
         value = {
-          inherit hostname;
+          hostname = nixosConfiguration.config.networking.hostName;
           profiles.system = {
             user = "root";
             path =

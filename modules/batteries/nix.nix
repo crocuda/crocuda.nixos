@@ -50,16 +50,7 @@
       programs =
         {}
         // lib.optionalAttrs (builtins.hasAttr "nixos-cli" options.programs) {
-          nixos-cli = {
-            enable = true;
-            generation-tag = config.system.name;
-            # config.system.name
-            # or
-            # builtins.elemAt pkgs.system.nixos.tags 0;
-            settings = {
-              use_nvd = true;
-            };
-          };
+          nixos-cli.generation-tag = config.system.name;
         };
     };
   };

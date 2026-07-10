@@ -1,13 +1,13 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{...}: {
   flake-file.inputs = {
     nixos-cli.url = "github:nix-community/nixos-cli";
   };
   crocuda.nixos-helpers = {
-    nixos = {pkgs, ...}: {
+    nixos = {
+      pkgs,
+      config,
+      ...
+    }: {
       environment.systemPackages = with pkgs; [
         # Nix generations diff tool
         nvd
@@ -33,8 +33,6 @@
       programs.nixos-cli = {
         enable = true;
         settings = {
-          tag = pkgs.system.nixos.tags;
-          # Whatever settings desired.
           use_nvd = true;
         };
       };
