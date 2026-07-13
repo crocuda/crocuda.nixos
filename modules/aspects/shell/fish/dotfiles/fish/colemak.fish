@@ -61,7 +61,7 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     # Add a way to switch from insert to normal (command) mode.
     # Note if we are paging, we want to stay in insert mode
     # See #2871
-    bind -s --preset -M insert \e "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char repaint-mode; end"
+    bind -s --preset -M insert \e "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f repaint-mode; end"
 
     # Set the cursor shape
     # After executing once, this will have defined functions listening for the variable.
@@ -126,9 +126,9 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
 
     ## Yank/Paste
     # Use os clipboard
-    bind -s --preset yy "fish_clipboard_copy; commandline -f end-selection repaint-mode"
-    bind -s --preset Y "fish_clipboard_copy; commandline -f end-selection repaint-mode"
-    bind -s --preset p "commandline -f forward-char repaint-mode; fish_clipboard_paste;"
+    bind -s --preset yy beginning-of-line begin-selection end-of-line fish_clipboard_copy end-selection 
+    bind -s --preset YY fish_clipboard_copy end-selection repaint-mode
+    bind -s --preset p "commandline -f repaint-mode; fish_clipboard_paste;"
 
     ## History
     # bind -s --preset e up-or-search
@@ -166,7 +166,10 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     bind -s --preset -M default \x7f backward-char
 
     ## Delete/Cut
-    bind -s --preset dd "fish_clipboard_copy; commandline -f kill-whole-line repaint-mode"
+    bind -s -preset dd beginning-of-line begin-selection end-of-line fish_clipboard_copy end-selection kill-whole-line
+
+    bind -s --preset DD fish_clipboard_copy end-selection repaint-mode clear-commandline
+
     bind -s --preset D kill-line
     bind -s --preset d\$ kill-line
     bind -s --preset d\^ backward-kill-line
@@ -301,28 +304,28 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
 
     ## Normal -> Visual 
     bind -s --preset -m visual v begin-selection repaint-mode
-    bind -s --preset -m visual V begin-selection down-line repaint-mode
+    bind -s --preset -m visual V beginning-of-line begin-selection end-of-line repaint-mode
 
     bind -s --preset -M visual m backward-char
     bind -s --preset -M visual i forward-char
 
-    bind -s --preset -M visual e up-line
-    bind -s --preset -M visual n down-line
+    bind -s --preset -M visual e up-line beginning-of-line
+    bind -s --preset -M visual n down-line end-of-line
 
     bind -s --preset -M visual b backward-word
-    bind -s --preset -M visual B backward-bigword
+    # bind -s --preset -M visual B backward-bigword
     # bind -s --preset -M visual ge backward-word
     # bind -s --preset -M visual gE backward-bigword
     bind -s --preset -M visual w forward-word
-    bind -s --preset -M visual W forward-bigword
+    # bind -s --preset -M visual W forward-bigword
     # bind -s --preset -M visual e forward-word
     # bind -s --preset -M visual E forward-bigword
-    bind -s --preset -M visual o swap-selection-start-stop repaint-mode
+    # bind -s --preset -M visual o swap-selection-start-stop repaint-mode
 
-    bind -s --preset -M visual f forward-jump
-    bind -s --preset -M visual t forward-jump-till
-    bind -s --preset -M visual F backward-jump
-    bind -s --preset -M visual T backward-jump-till
+    # bind -s --preset -M visual f forward-jump
+    # bind -s --preset -M visual t forward-jump-till
+    # bind -s --preset -M visual F backward-jump
+    # bind -s --preset -M visual T backward-jump-till
 
     for key in $eol_keys
         bind -s --preset -M visual $key end-of-line
@@ -338,8 +341,8 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     bind -s --preset -M visual -m default x kill-selection end-selection repaint-mode
 
     bind -s --preset -M visual -m default X kill-whole-line end-selection repaint-mode
-    bind -s --preset -M visual -m default y "fish_clipboard_copy; commandline -f end-selection repaint-mode"
-    bind -s --preset -M visual -m default p "commandline -f forward-char; fish_clipboard_paste; commandline -f end-selection repaint-mode"
+    # bind -s --preset -M visual -m default y "fish_clipboard_copy; commandline -f end-selection repaint-mode"
+    # bind -s --preset -M visual -m default p "commandline -f forward-char; fish_clipboard_paste; commandline -f end-selection repaint-mode"
     bind -s --preset -M visual -m default '~' togglecase-selection end-selection repaint-mode
 
     bind -s --preset -M visual -m default \cc end-selection repaint-mode
@@ -368,5 +371,9 @@ function fish_vi_key_bindings --description 'colemak nvim key bindings for fish'
     set fish_cursor_replace underscore
     set fish_cursor_external line
     set fish_cursor_visual block
-
 end
+
+# Vim mod Colemak-DH keybindings
+set -g fish_vi_key_bindings fish_vi_key_bindings
+set -g fish_key_bindings fish_vi_key_bindings
+

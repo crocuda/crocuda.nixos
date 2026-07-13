@@ -32,6 +32,11 @@
         skim
         fd
 
+        # Disk
+        dysk # df replacement (rust)
+        duf # df replacement (go)
+        dua
+
         ## Fish Shell dependencies
         starship
         fish
@@ -97,6 +102,14 @@
               src = grc.src;
             }
           ];
+        };
+        atuin = {
+          enable = true;
+          enableFishIntegration = true;
+        };
+        zoxide = {
+          enable = true;
+          enableFishIntegration = true;
         };
       };
     };
@@ -167,11 +180,6 @@
 
         # Inspect fs and io
 
-        # Disk
-        duf # df replacement (go)
-        dysk # df replacement (rust)
-        dua
-
         pciutils
         lshw
 
@@ -184,9 +192,6 @@
 
         # ssh
         ggh
-
-        # Git repository manager
-        siketyan-ghr
       ];
     };
   };

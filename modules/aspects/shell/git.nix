@@ -5,6 +5,10 @@
   };
   crocuda.shell.git = {
     homeManager = {pkgs, ...}: {
+      home.packages = with pkgs; [
+        # Git repository manager
+        siketyan-ghr
+      ];
       home.file = {
         # siketyan/ghr plugin and completion
         ".config/fish/conf.d/git.fish".text =
