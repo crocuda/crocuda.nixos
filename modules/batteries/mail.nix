@@ -1,7 +1,10 @@
-{...}: {
-  crocuda.batteries.mail = {mails, ...}: {
+{crocuda, ...}: {
+  crocuda.batteries.mails = mails: {
+    imports = [
+      crocuda.aspects.mail
+    ];
     nixos = {config, ...}: {
-      config.crocuda.servers.mails = {
+      config.crocuda.mails = {
         enable = true;
         accounts = mails;
       };
