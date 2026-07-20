@@ -15,6 +15,7 @@
     lib = crocuda_lib;
     crocuda_lib = builtins.mapAttrs (_: load) {
       network = ../lib/network.nix;
+      zones = ../lib/zones.nix;
       hugepages = ../lib/hugepages.nix;
     };
     ## Unit tests

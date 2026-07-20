@@ -1,5 +1,5 @@
 {...}: {
-  crocuda.aspects.mail = {
+  crocuda.mails = {
     nixos = {
       config,
       pkgs,
@@ -12,7 +12,7 @@
           lib.lists.forEach mails (
             mail:
             # Extract domain from mail
-              lib.list.last (lib.string.splitString "@")
+              lib.lists.last (lib.strings.splitString "@" mail)
           )
         );
 
@@ -33,7 +33,7 @@
             ''
           )
         );
-      # Usage: _make_certs ["example.com"] -> [{cert = ""; key = ""}]
+
       _generate_xml = name: ''
         <?xml version=\"1.0\"?>
         <clientConfig version=\"1.1\">
@@ -80,8 +80,9 @@
       # Get certificates from caddy
       caddy_dir = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory";
       # Get certificates from certbot
-      certbot_dir = "/etc/letsencrypt/live";
-
+      # certbot_dir = "/etc/letsencrypt/live";
+      #
+      # Usage: _make_certificates ["example.com"] -> [{cert = ""; key = ""}]
       _make_certificates = domains:
         lib.lists.forEach domains (
           name:
@@ -95,24 +96,22 @@
           }
         );
 
-      accounts = config.crocuda.servers.mail.accounts;
+      accounts = config.crocuda.mails.accounts;
       domains = _extract_domains accounts;
-      primaryDomain = lib.list.first domains;
+      primaryDomain = builtins.elemAt domains 0;
     in {
       ###################################
       # Options definition
       options.crocuda.mails = {
-        mails = {
-          enable = lib.mkEnableOption ''
-            Toggle the module
+        enable = lib.mkEnableOption ''
+          Toggle the module
+        '';
+        accounts = lib.mkOption {
+          type = with lib.types; listOf str;
+          description = ''
+            List of account to create.
           '';
-          accounts = lib.mkOption {
-            type = with lib.types; listOf str;
-            description = ''
-              List of account to create.
-            '';
-            default = ["anon@example.com"];
-          };
+          default = ["anon@example.com"];
         };
       };
 
@@ -132,6 +131,7 @@
         ];
 
         # The mail server
+        systemd.services."maddy".after = ["caddy.service"];
         services.maddy = {
           group = "users";
           enable = true;
