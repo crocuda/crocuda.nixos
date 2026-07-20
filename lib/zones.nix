@@ -12,6 +12,7 @@
   in
     reversed + ".in-addr.arpa";
 
+  # Expand 0.
   _parse_and_expand_ipv6 = ipv6: let
     _parts = lib.strings.splitString ":" (
       (lib.network.ipv6.fromString ipv6).address
@@ -46,10 +47,22 @@
         lib.strings.stringToCharacters numeric
       )
     );
+
+    #
+    base_config = {
+      domain,
+      ipv4,
+      ipv6,
+    }: ''
+      $ORIGIN ${domain}
+      $TTL 3600
+
+    '';
   in
     reversed + ".ip6.arpa";
 in {
   inherit ipv4_to_ptr;
+
   inherit _parse_and_expand_ipv6;
   inherit ipv6_to_ptr;
 }

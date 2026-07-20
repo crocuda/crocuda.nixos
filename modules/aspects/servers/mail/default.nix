@@ -1,7 +1,16 @@
-{...}: {
+{crocuda, ...}: {
+  flake-file.inputs = {
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
   crocuda.mails = {
+    include = [crocuda.mail.secrets];
     nixos = {
       config,
+      options,
       pkgs,
       lib,
       ...
@@ -120,18 +129,35 @@
           # Maddy directories
           # Make them by hand if maddy unit fails
           "d /run/maddy 774 maddy users - -"
-          "Z /run/maddy 77 maddy users - -"
+          "Z /run/maddy 774 maddy users - -"
 
           # Symlink to nginx-unit certs
           # "Z /etc/letsencrypt 754 root users - -"
           # "L+ /etc/maddy/certs - - - - /var/spool/unit/certs"
           # Symlink to caddy certs
-          "Z /var/lib/caddy 775 caddy users - -"
+          # "Z /var/lib/caddy 775 caddy users - -"
           "L+ /etc/maddy/certs - - - - ${caddy_dir}"
         ];
 
         # The mail server
-        systemd.services."maddy".after = ["caddy.service"];
+        systemd.services."maddy-ensure-permissions" = {
+          enable = true;
+          wantedBy = ["maddy.service"];
+          serviceConfig = {
+            User = "root";
+            ExecStart = ''
+              ${pkgs.coreutils}/bin/chmod -R g+rx ${caddy_dir}
+            '';
+          };
+        };
+        systemd.services."maddy" = {
+          after = [
+            "caddy.service"
+            "maddy-ensure-permissions.service"
+          ];
+          serviceConfig = {
+          };
+        };
         services.maddy = {
           group = "users";
           enable = true;
@@ -149,18 +175,48 @@
             certificates = _make_certificates domains;
           };
         };
-
         # Serve autodiscovery/autoconfig xml files
         services.caddy = {
           extraConfig = _make_caddy_extraconf domains;
         };
-        # users.users."root" = {
-        #   initialPassword = "root";
-        # };
-        # users.users."anon" = {
-        #   isNormalUser = true;
-        #   initialPassword = "anon";
-        # };
+      };
+    };
+  };
+  crocuda.mails.secrets = {
+    nixos = {
+      config,
+      options,
+      pkgs,
+      lib,
+      ...
+    }: let
+      accounts = config.crocuda.mails.accounts;
+    in {
+      ## Only if sops enable
+      config = lib.optionalAttrs (builtins.hasAttr "sops" options) {
+        sops.secrets = builtins.listToAttrs (lib.forEach accounts (
+          account: {
+            name = "mails/${account}";
+            value = {
+              owner = "root";
+              group = "users";
+              mode = "0440";
+              path = "/var/lib/maddy/secrets/${account}";
+            };
+          }
+        ));
+        systemd.services."maddy-ensure-passwords" = {
+          enable = true;
+          wantedBy = ["maddy.service"];
+          serviceConfig = {
+            User = "root";
+            ExecStart = lib.concatLines (
+              lib.forEach accounts (account: ''
+                cat ${config.sops.secrets."mails/${account}".path} | ${pkgs.maddy}/bin/maddyctl creds password
+              '')
+            );
+          };
+        };
       };
     };
   };
