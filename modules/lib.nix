@@ -19,9 +19,14 @@
       hugepages = ../lib/hugepages.nix;
     };
     ## Unit tests
-    tests = import ../lib/_test_network.nix {
-      inherit crocuda_lib;
-      inherit lib;
-    };
+    tests =
+      import ../lib/_test_network.nix {
+        inherit crocuda_lib;
+        inherit lib;
+      }
+      // import ../lib/_test_zones.nix {
+        inherit crocuda_lib;
+        inherit lib;
+      };
   };
 }

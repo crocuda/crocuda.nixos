@@ -1,3 +1,7 @@
+## Tests:
+# nix-unit --flake ".#tests" \
+#       --override-input crocuda ../crocuda.nixos
+#
 {lib, ...}: let
   _rand_uuid = builtins.readFile /proc/sys/kernel/random/uuid;
   random_mac = str_to_mac _rand_uuid;
