@@ -39,6 +39,7 @@
 
         # Query content
         curl
+        wget
         grpcurl
 
         # VPN

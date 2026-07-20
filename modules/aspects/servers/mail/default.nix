@@ -8,18 +8,15 @@
       ...
     }:
       with lib; let
-        # Maddy config
-        cfg = config.crocuda.servers;
-        domains = cfg.mail.maddy.domains;
-        accounts = cfg.mail.maddy.accounts;
-        primaryDomain = builtins.elemAt domains 0;
-
-        # Get certificates from caddy
-        caddy_dir = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory";
-        # Get certificates from certbot
-        certbot_dir = "/etc/letsencrypt/live";
-
-        ## Tls certificate function.
+        # Extract domain from email list.
+        _extract_domains = mails:
+          lib.lists.unique (
+            lib.lists.forEach mails (
+              mail:
+              # Extract domain from mail
+                lib.list.last (lib.string.splitString "@")
+            )
+          );
 
         # Generate extra configuration.
         # Create an xml file served by caddy for mail client autoconf.
@@ -80,6 +77,13 @@
           </clientConfig>
         '';
 
+        ## Tls certificate function.
+        #
+        # Get certificates from caddy
+        caddy_dir = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory";
+        # Get certificates from certbot
+        certbot_dir = "/etc/letsencrypt/live";
+
         _make_certificates = domains:
           lib.lists.forEach domains (
             name:
@@ -95,28 +99,16 @@
       in {
         ###################################
         # Options definition
-        options.crocuda = {
-          mail = {
-            maddy = {
-              enable = mkEnableOption ''
-                Toggle the module
-              '';
-              domains = mkOption {
-                type = with types; listOf str;
-                description = ''
-                  List of domain to map to.
-                  The first domain of the list is used as the primary domain.
-                '';
-                default = ["example.com"];
-              };
-              accounts = mkOption {
-                type = with types; listOf str;
-                description = ''
-                  List of account to create
-                '';
-                default = ["anon@example.com"];
-              };
-            };
+        options.crocuda.mail = {
+          enable = mkEnableOption ''
+            Toggle the module
+          '';
+          accounts = mkOption {
+            type = with types; listOf str;
+            description = ''
+              List of account to create.
+            '';
+            default = ["anon@example.com"];
           };
         };
 
@@ -135,13 +127,16 @@
         ];
 
         # The mail server
-        services.maddy = {
+        services.maddy = let
+          domains = _extract_domains config.crocuda.servers.mail.accounts;
+          primaryDomain = lib.list.first domain;
+        in {
           group = "users";
           enable = true;
 
+          inherit primaryDomain;
           hostname = primaryDomain;
           localDomains = domains;
-          inherit primaryDomain;
 
           openFirewall = false;
           ensureAccounts = accounts;
