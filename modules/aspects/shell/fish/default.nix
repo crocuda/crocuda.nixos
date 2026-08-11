@@ -48,6 +48,15 @@
       ];
     };
     homeManager = {pkgs, ...}: {
+      programs.fish = {
+        shellAliases = {
+          ls = "eza -b";
+          lls = "eza -aalghb";
+          ll = "eza -lghb";
+          tree = "eza --tree -alghb -L 2";
+          treee = "eza --tree -alghb";
+        };
+      };
       home.file = {
         ## Shell aliases
         ".aliases".source = dotfiles/fish/.aliases;
@@ -57,6 +66,7 @@
           set fish_greeting
         '';
 
+        # Deprecated: replaced by "shellAliases"
         ".config/fish/conf.d/eza.fish".text = ''
           alias ls='eza -b'
           alias lls='eza -aalghb'

@@ -47,17 +47,6 @@
         lib.strings.stringToCharacters numeric
       )
     );
-
-    #
-    base_config = {
-      domain,
-      ipv4,
-      ipv6,
-    }: ''
-      $ORIGIN ${domain}
-      $TTL 3600
-
-    '';
   in
     reversed + ".ip6.arpa";
 in {
