@@ -1,7 +1,7 @@
 # DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 
   inputs = {
     boulette = {
@@ -12,6 +12,10 @@
     den.url = "github:denful/den";
     deploy-rs = {
       url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dns = {
+      url = "github:nix-community/dns.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-file.url = "github:vic/flake-file";
@@ -34,5 +38,9 @@
     nixpkgs-deprecated.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

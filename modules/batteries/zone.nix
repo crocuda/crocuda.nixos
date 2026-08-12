@@ -1,8 +1,24 @@
-{inputs, ...}: {
+## Decription:
+#
+# Creates a dns zone file.
+#
+## Usage:
+#
+#```nix
+# includes = [
+#   (crocuda.batteries.zone
+#     {
+#       domain = "test.com";
+#       ipv4 = "127.0.0.1";
+#       ipv6 = "2002:7f00:1::";
+#     })
+# ];
+#```
+{self, ...}: {
   flake-file.inputs = {
     # Dns
     dns = {
-      url = "github:kirelagin/dns.nix";
+      url = "github:nix-community/dns.nix";
       inputs.nixpkgs.follows = "nixpkgs"; # (optionally)
     };
   };
@@ -17,8 +33,8 @@
       ipv4,
       ipv6,
     }:
-      with inputs.dns.lib.combinators;
-      with inputs.crocuda.lib.zones; {
+      with self.inputs.dns.lib.combinators;
+      with self.crocuda_lib.zones; {
         SOA = {
           nameServer = "ns1.${domain}.";
           adminEmail = "admin@${domain}";
@@ -53,7 +69,7 @@
       ipv4,
       ipv6,
     }:
-      inputs.dns.lib.toString "${domain}" (_mkDefaultZone {
+      self.inputs.dns.lib.toString "${domain}" (_mkDefaultZone {
         inherit domain;
         inherit ipv4;
         inherit ipv6;
@@ -64,7 +80,7 @@
       ipv4,
       ipv6,
     }: {
-      ${domain} = inputs.dns.lib.toString "${domain}" (_mkDefaultZone {
+      ${domain}.data = self.inputs.dns.lib.toString "${domain}" (_mkDefaultZone {
         inherit domain;
         inherit ipv4;
         inherit ipv6;

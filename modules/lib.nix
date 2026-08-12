@@ -4,11 +4,6 @@
       url = "github:adisbladis/lix-unit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Dns
-    dns = {
-      url = "github:kirelagin/dns.nix";
-      inputs.nixpkgs.follows = "nixpkgs"; # (optionally)
-    };
   };
   flake = {
     pkgs,
@@ -21,7 +16,6 @@
       };
   in rec {
     lib = crocuda_lib;
-    dns_lib = flake.inputs.dns.lib;
     crocuda_lib = builtins.mapAttrs (_: load) {
       network = ../lib/network.nix;
       hugepages = ../lib/hugepages.nix;
