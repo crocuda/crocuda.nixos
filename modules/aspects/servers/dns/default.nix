@@ -14,7 +14,18 @@
         # enabled on privacy feature only
         ##########################
         # Set privacy respecting static DNS
-        networking.nameservers = lib.mkDefault [
+
+        networking.dhcpcd.extraConfig = "nohook resolv.conf";
+        services.resolved = {
+          settings.Resolve = {
+            DNSSEC = true;
+            Domains = ["~."];
+            DNSOverTLS = true;
+            FallbackDNS = config.networking.nameservers;
+          };
+        };
+        # networking.nameservers = lib.mkDefault [
+        networking.nameservers = [
           # Ipv6 first
           # Mullvad
           "2a07:e340::4"
