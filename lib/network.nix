@@ -50,7 +50,18 @@
     iid = _hash_to_address hash step;
   in
     iid;
+
+  # Generate an ipv6 iid from a string
+  str_to_duid-uuid = string: let
+    # Take only the iid part of the ipv6
+    duid_type = "0004";
+    hash = duid_type + _str_to_hash string;
+    step = 2;
+    duid-uuid = _hash_to_address hash step;
+  in
+    duid-uuid;
 in {
   inherit _str_to_hash;
   inherit random_mac str_to_mac str_to_ipv6 str_to_iid;
+  inherit str_to_duid-uuid;
 }

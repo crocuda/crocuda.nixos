@@ -20,4 +20,8 @@ in
       expr = str_to_ipv6 secret;
       expected = "70cc:2860:c237:1bf7:8725:9754:5f76:774c";
     };
+    testHashToDuidUuid = {
+      expr = str_to_duid-uuid secret;
+      expected = "00:04:70:cc:28:60:c2:37:1b:f7:87:25:97:54:5f:76:77:4c";
+    };
   }
