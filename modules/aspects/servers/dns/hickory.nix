@@ -78,7 +78,7 @@
                   type = "forward";
                   name_servers = [
                     {
-                      ip = "192.168.1.1";
+                      ip = "192.168.10.1";
                       inherit (baseConfig) trust_negative_responses connections;
                     }
                     {

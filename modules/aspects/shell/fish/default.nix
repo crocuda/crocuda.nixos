@@ -50,9 +50,10 @@
     homeManager = {pkgs, ...}: {
       programs.fish = {
         shellAliases = {
+          l = "eza -b";
           ls = "eza -b";
-          lls = "eza -aalghb";
           ll = "eza -lghb";
+          lls = "eza -aalghb";
           tree = "eza --tree -alghb -L 2";
           treee = "eza --tree -alghb";
         };
