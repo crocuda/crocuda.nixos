@@ -97,14 +97,14 @@
                   type = "forward";
                   name_servers = [
                     #Mullvad
-                    {
-                      ip = "194.242.2.4";
-                      inherit (baseConfig) trust_negative_responses connections;
-                    }
-                    {
-                      ip = "2a07:e340::4";
-                      inherit (baseConfig) trust_negative_responses connections;
-                    }
+                    # {
+                    #   ip = "194.242.2.4";
+                    #   inherit (baseConfig) trust_negative_responses connections;
+                    # }
+                    # {
+                    #   ip = "2a07:e340::4";
+                    #   inherit (baseConfig) trust_negative_responses connections;
+                    # }
                     #Quad9
                     {
                       ip = "9.9.9.9";
