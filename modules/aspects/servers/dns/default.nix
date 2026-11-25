@@ -36,10 +36,26 @@
         services.resolved = {
           settings.Resolve = {
             DNS = [
-              "2620:fe::9"
+              # adguard
+              "2a10:50c0::ad1:ff"
+              "2a10:50c0::ad2:ff"
+
+              # quad9
+              # "2620:fe::9"
               # "2620:fe::fe"
-              "9.9.9.9"
+
+              # router
               "fe80::1"
+
+              # quad9
+              # "9.9.9.9"
+
+              # AdGuard
+              "94.140.14.14"
+              "94.140.15.15"
+
+              # router
+              "192.168.10.1"
             ];
             # DNSSEC = mkDefault true;
             # Domains = mkDefault ["~."];
@@ -53,14 +69,23 @@
           # Mullvad
           # "2a07:e340::4"
           # Quad9
-          "2620:fe::fe"
-          "2620:fe::9"
+          # "2620:fe::fe"
+          # "2620:fe::9"
+
+          # AdGuard
+          "2a10:50c0::ad1:ff"
+          "2a10:50c0::ad2:ff"
 
           # Ipv4 support
           # Mullvad
           # "194.242.2.4"
           # Quad9
-          "9.9.9.9"
+          # "9.9.9.9"
+
+          # AdGuard
+          "94.140.14.14"
+          "94.140.15.15"
+
           # Local
           "127.0.0.1"
           "::1"
@@ -146,8 +171,14 @@
                   # "194.242.2.4"
 
                   #Quad9
-                  "2620:fe::fe"
-                  "9.9.9.9"
+                  # "2620:fe::fe"
+                  # "9.9.9.9"
+
+                  # AdGuard
+                  "2a10:50c0::ad1:ff"
+                  "2a10:50c0::ad2:ff"
+                  "94.140.14.14"
+                  "94.140.15.15"
                 ];
               }
             ];
